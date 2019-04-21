@@ -1,78 +1,71 @@
 import React, { Component } from 'react';
-import { Modal, Form } from 'react-bootstrap';
-import Logo from 'images/Logo3.png';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import 'components/Login/Login.css'
+import { Formik, Field, Form, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+import { authenticationService } from 'utils/authentication.service'
 class LoginTab extends Component {
-    state = {
-        name: 'nguyenphi0511@yahoo.com.vn',
-    };
+    constructor(props) {
+        super(props);
 
-    handleChange = name => event => {
-        this.setState({ [name]: event.target.value });
-    };
+        // redirect to home if already logged in
+        if (authenticationService.currentUserValue) {
+            this.props.history.push('/');
+        }
+    }
+
     render() {
         return (
-            <Modal
-                {...this.props}
-                size="md"
-                aria-labelledby="contained-modal-title-vcenter"
-                centered>
-                <Modal.Header closeButton>
-                    <img src={Logo} alt="Logo" className="logo"></img>
-                </Modal.Header>
-                <Modal.Body>
-                    <Form>
-                        <Grid container spacing={24}>
-                            <Grid item xs={2}></Grid>
-                            <Grid item xs={8}>
-                                <TextField
-                                    id="Email-input"
-                                    label="Email"
-                                    className="Email-input"
-                                    value={this.state.name}
-                                    onChange={this.handleChange('name')}
-                                    margin="normal"
-                                />
+            <div>
+                <Formik
+                    initialValues={{
+                        username: '',
+                        password: ''
+                    }}
+                    validationSchema={Yup.object().shape({
+                        username: Yup.string().required('Username is required'),
+                        password: Yup.string().required('Password is required')
+                    })}
+                    onSubmit={({ username, password }, { setStatus, setSubmitting }) => {
+                        setStatus();
+                        authenticationService.login(username, password)
+                            .then(
+                                user => {
+                                    const { from } = this.props.location.state || { from: { pathname: "/" } };
+                                    this.props.history.push(from);
+                                },
+                                error => {
+                                    setSubmitting(false);
+                                    setStatus(error);
+                                }
+                            );
+                    }}
+                    render={({ errors, status, touched, isSubmitting }) => (
+                        <Form>
+                            <Grid container spacing={24}>
+                                <Grid item xs={5}>
+                                    <Field name="username" type="text" placeholder="username" className={'form-control' + (errors.username && touched.username ? ' is-invalid' : '')} />
+                                    <ErrorMessage name="username" component="div" className="invalid-feedback" />
+                                </Grid>
+                                <Grid item xs={5}>
+                                    <Field name="password" type="password" placeholder="password" className={'form-control' + (errors.password && touched.password ? ' is-invalid' : '')} />
+                                    <ErrorMessage name="password" component="div" className="invalid-feedback" />
+                                </Grid>
+                                <Grid item xs={2}>
+                                    <button type="submit" className="btn btn-primary" disabled={isSubmitting}>Login</button>
+                                    {isSubmitting &&
+                                        <img alt="login" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+                                    }
+                                </Grid>
+                                {status &&
+                                    <div className={'alert alert-danger'}>{status}</div>
+                                }   
                             </Grid>
-                            <Grid item xs={2}></Grid>
-                            <Grid item xs={2}></Grid>
-                            <Grid item xs={8}>
-                                <TextField
-                                    id="password-input"
-                                    label="Password"
-                                    className="Password"
-                                    type="password"
-                                    autoComplete="current-password"
-                                    margin="normal"
-                                />
-                            </Grid>
-                            <Grid item xs={2}></Grid>
-                            <Grid item xs={9}></Grid>
-                            <Grid item xs={3}>
-                                <Button variant="contained" color="primary">
-                                    Log In
-                                 </Button>
-                            </Grid>
-                        </Grid>
-                    </Form>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Grid container spacing={24}>
-                        <Grid item xs={4}>
-                            <a href="#"> <i class="fas fa-unlock-alt"></i> Can't log in?</a>
-                        </Grid>
-                        <Grid item xs={5}>
-                            <a href="#"><i class="fas fa-question-circle"></i> Need more help?</a>
-                        </Grid>
-                        <Grid item xs={4}>
-                        </Grid>
-                    </Grid>
-                </Modal.Footer>
-            </Modal>
-        );
+                        </Form>
+                    )}
+                />
+            </div>
+        )
     }
 }
 

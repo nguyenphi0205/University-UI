@@ -1,0 +1,22 @@
+.Manager-View {
+  /* margin-left: 140px; Same width as the sidebar + left position in px */
+  font-size: 28px;
+  /* Increased text to enable scrolling */
+  margin: auto;
+  margin-left: 10%;
+  width: 90%;
+  /* border: 3px solid green; */
+  padding: 0px 10px;
+  padding-top: 10%
+}
+
+.statistic-div {
+  margin-top: 10% !important;
+  margin: auto;
+  width: 50%; 
+  padding: 10px;
+}
+
+.statistic-barchart {
+  width: 50%
+}

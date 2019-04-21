@@ -1,0 +1,41 @@
+.Paper-Div, .Faculty-Management-div {
+    font-size: 28px;
+    /* Increased text to enable scrolling */
+    padding: 0px 10px;
+    padding-top: 10%
+}
+
+.Info-Paper {
+    margin: auto;
+    width: 50%;
+    /* border: 3px solid green; */
+    padding: 10px
+}
+
+.Info-Title {
+    text-align: center;
+}
+
+.Edit-info, .ChangePassword {
+    float: right;
+}
+
+.Faculty-Management-View {
+    margin: auto;
+    margin-left: 10%;
+    width: 90%;
+    /* border: 3px solid green; */
+    padding: 10px
+}
+.Comment{
+    max-width: 140px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.aprove{
+    background: #3cd1c2 !important;
+}
+.notapprove{
+    background: #f83e70 !important;
+}

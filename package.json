@@ -6,12 +6,19 @@
     "@material-ui/core": "^3.9.3",
     "@material-ui/icons": "^3.0.2",
     "bootstrap": "^4.3.1",
+    "formik": "^1.5.2",
+    "history": "^4.9.0",
     "react": "^16.8.2",
     "react-bootstrap": "^1.0.0-beta.5",
     "react-bootstrap-sidebar": "0.0.1",
     "react-dom": "^16.8.2",
+    "react-inline-editing": "^1.0.10",
     "react-router-dom": "^5.0.0",
-    "react-scripts": "^2.1.8"
+    "react-scripts": "^2.1.8",
+    "reactstrap": "^8.0.0",
+    "recharts": "^1.5.0",
+    "rxjs": "^6.4.0",
+    "yup": "^0.27.0"
   },
   "scripts": {
     "start": "cross-env NODE_PATH=src react-scripts start",
