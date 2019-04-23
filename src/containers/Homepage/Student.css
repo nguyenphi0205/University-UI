@@ -1,53 +1,114 @@
-.Upload-div {
-    padding: 0px 10px;
-    padding-top: 10%;
-    margin: auto;
+@media only screen and (min-width:320px) {
+    .Upload-div {
+        font-size: 28px;
+        /* Increased text to enable scrolling */
+        padding: 0px 10px;
+        padding-top: 50%;
+        padding-left: 10%;
+    }
+    .Info-Paper {
+        margin: auto;
+        width: 75%;
+        /* border: 3px solid green; */
+        padding: 10px
+    }
+    .Edit-info, .ChangePassword {
+        font-size: 8px !important;
+        float: right;
+        /* width: 20% */
+    }
+    .myLabelClass {
+        font-size: 20px
+    }
+    .fileInput {
+        margin: auto;
+        padding: 10px;
+        font-size: 12px;
+    }
+    .term {
+        font-size: 11px;
+    }
+}
+
+@media (min-width:641px) {
+    /* portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */
+    /* portrait e-readers (Nook/Kindle), smaller tablets @ 600 or @ 640 wide. */
+    .Upload-div {
+        font-size: 28px;
+        /* Increased text to enable scrolling */
+        padding: 0px 10px;
+        padding-top: 25%
+    }
+    .Info-Paper {
+        margin: auto;
+        width: 50%;
+        float: center;
+        /* border: 3px solid green; */
+        padding: 10px
+    }
+    .Edit-info, .ChangePassword {
+        float: right;
+        /* width: 20% */
+    }
+    .faculty-select, .fileInput {
+        margin: auto;
+        padding: 10px;
+        width: 80%!important
+    }
+    .term {
+        font-size: 20px;
+    }
+}
+
+@media only screen and (min-width:1024px) {
+    .Upload-div {
+        font-size: 28px;
+        /* Increased text to enable scrolling */
+        padding: 0px 10px;
+        padding-top: 15%
+    }
+    .Info-Paper {
+        margin: auto;
+        width: 50%;
+        float: center;
+        /* border: 3px solid green; */
+        padding: 10px
+    }
+    .faculty-select, .fileInput {
+        margin: auto;
+        padding: 10px;
+        width: 60%!important
+    }
+}
+
+@media (min-width:1281px) {
+    .Upload-div {
+        font-size: 28px;
+        /* Increased text to enable scrolling */
+        padding: 0px 10px;
+        padding-top: 15%
+    }
+    .Info-Paper {
+        margin: auto;
+        width: 50%;
+        float: center;
+        /* border: 3px solid green; */
+        padding: 10px
+    }
+    .Edit-info, .ChangePassword {
+        font-size: 15px !important;
+        /* width: 20% */
+    }
+    .faculty-select, .fileInput {
+        margin: auto;
+        padding: 10px;
+        width: 50%!important
+    }
+}
+
+.Upload-btn {
     width: 50%;
-    /* border: 3px solid green; */
-    /* padding: 10px */
-}
-
-#faculty-select {
-    width: 50%;
-    margin: auto;
-}
-
-.Faculty-type {}
-
-h3 {
-    margin-left: 15px;
-}
-
-.fileInput {
-    margin-left: 165.750px;
-    margin-bottom: 20px;
-    margin-top: 20px;
-    border-bottom: 4px solid lightgray;
-    border-right: 4px solid lightgray;
-    border-top: 1px solid black;
-    border-left: 1px solid black;
-    padding: 10px;
-    cursor: pointer;
-}
-
-.previewText {
-    width: 100%;
-    margin-top: 20px;
-}
-
-.submitButton {
-    padding: 12px;
-    margin: auto;
-    /* margin-left: 10px; */
-    background: white;
-    border: 4px solid lightgray;
-    border-radius: 15px;
-    font-weight: 700;
-    font-size: 10pt;
-    cursor: pointer;
-}
-
-.centerText {
     text-align: center;
-    width: 500px;
+    margin: auto;
+    padding: 10px;
 }

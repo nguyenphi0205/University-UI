@@ -42,7 +42,7 @@ class LoginTab extends Component {
                     }}
                     render={({ errors, status, touched, isSubmitting }) => (
                         <Form>
-                            <Grid container spacing={24}>
+                            <Grid container spacing={8}>
                                 <Grid item xs={5}>
                                     <Field name="username" type="text" placeholder="username" className={'form-control' + (errors.username && touched.username ? ' is-invalid' : '')} />
                                     <ErrorMessage name="username" component="div" className="invalid-feedback" />

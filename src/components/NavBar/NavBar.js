@@ -8,7 +8,7 @@ class NavBar extends Component {
     render() {
         return (
             <div className="nav">
-                <Navbar bg="light" expand="lg">
+                <Navbar bg="light" expand="lg" sticky="top">
                     <Navbar.Brand href="#home">
                         <img src={Logo} alt="Logo" className="logo"></img>
                     </Navbar.Brand>

@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import Grid from '@material-ui/core/Grid';
+import 'containers/Manager/Manager.css'
 import {
     PieChart, Pie, Sector, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
 } from 'recharts';
@@ -110,14 +111,14 @@ export default class Statistic extends PureComponent {
     render() {
         return (
             <div className="statistic-div">
-                <Grid container spacing={2}>
-                    <Grid item xs={4}>
+                <Grid container spacing={40}>
+                    <Grid item xs={12}>
                         <BarChart
                             width={500}
                             height={300}
                             data={data2}
                             margin={{
-                                top: 5, right: 30, left: 20, bottom: 5,
+                                top: 5, right: 30, left: 20, bottom: 10,
                             }}
                         >
                             <CartesianGrid strokeDasharray="3 3" />
@@ -128,10 +129,8 @@ export default class Statistic extends PureComponent {
                             <Bar dataKey="pv" barSize={20} fill="#8884d8" />
                         </BarChart>
                     </Grid>
-                    {/* <Grid item xs={2}></Grid> */}
-                    <Grid item xs={6}></Grid>
-                    <Grid item xs={2}>
-                        <PieChart width={1000} height={1000}>
+                    <Grid item xs={12}>
+                        <PieChart width={500} height={500}>
                             <Pie
                                 activeIndex={this.state.activeIndex}
                                 activeShape={renderActiveShape}
@@ -147,6 +146,7 @@ export default class Statistic extends PureComponent {
                         </PieChart>
                     </Grid>
                 </Grid>
+
 
             </div>
 

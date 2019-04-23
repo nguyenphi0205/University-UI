@@ -4,6 +4,12 @@ import { Navbar } from 'react-bootstrap';
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import Popper from '@material-ui/core/Popper';
+import Grow from '@material-ui/core/Grow';
+import Paper from '@material-ui/core/Paper';
+import Fab from '@material-ui/core/Fab';
+import MenuList from '@material-ui/core/MenuList';
 //test
 import GuessPage from "containers/Guess/GuessPage";
 import Info_Coordiantor from "containers/Coordinator/Info_Coordinator";
@@ -32,9 +38,21 @@ class App extends Component {
       anchorEl: null,
       isAdmin: false,
       isManager: false,
-      isStudent: false
+      isStudent: false,
+      open: false,
     };
   }
+  handleToggle = () => {
+    this.setState(state => ({ open: !state.open }));
+  };
+
+  handleClose = event => {
+    if (this.anchorEl.contains(event.target)) {
+      return;
+    }
+
+    this.setState({ open: false });
+  };
   handleClick = event => {
     this.setState({ anchorEl: event.currentTarget });
   };
@@ -55,13 +73,14 @@ class App extends Component {
     history.push('/login');
   }
   render() {
-    const { currentUser, isAdmin, isManager, isStudent, anchorEl } = this.state;
+    const { currentUser, isAdmin, isManager, isStudent, anchorEl, open } = this.state;
+
     return (
       <Router history={history}>
         <div className="App">
           {currentUser &&
             <div className="nav">
-              <Navbar bg="light" expand="lg">
+              <Navbar bg="light" expand="lg" sticky="top" >
                 <Navbar.Brand>
                   <Link to="/" className="nav-item nav-link">
                     <img src={Logo} alt="Logo" className="logo"></img>
@@ -72,15 +91,15 @@ class App extends Component {
                   <Navbar.Collapse className="justify-content-end">
                     {isAdmin &&
                       <Button aria-owns={anchorEl ? 'simple-menu' : undefined} aria-haspopup="true" onClick={this.handleClick} >
-                      MARKETING MANAGER </Button>
+                        MARKETING MANAGER </Button>
                     }
                     {isManager &&
                       <Button aria-owns={anchorEl ? 'simple-menu' : undefined} aria-haspopup="true" onClick={this.handleClick} >
-                      MARKETING COORDINATOR </Button>
+                        MARKETING COORDINATOR </Button>
                     }
                     {isStudent &&
                       <Button aria-owns={anchorEl ? 'simple-menu' : undefined} aria-haspopup="true" onClick={this.handleClick} >
-                      STUDENT </Button>
+                        STUDENT </Button>
                     }
                     <Menu
                       id="simple-menu"
@@ -101,25 +120,77 @@ class App extends Component {
               </Navbar>;
             </div>
           }
+
           {
             currentUser &&
-            <div className="sidenav">
-              {/* manager sidebar */}
-              {isAdmin && <Link to="/info-manager" className="nav-item nav-link">Info</Link>}
-              {isAdmin && <Link to="/contribute" className="nav-item nav-link">View Contribute</Link>}
-              {isAdmin && <Link to="/statistic" className="nav-item nav-link">Statistic</Link>}
-              {/* coordinator sidebar */}
-              {isManager && <Link to="/info-coordinator" className="nav-item nav-link">Info</Link>}
-              {isManager && <Link to="/faculty-management" className="nav-item nav-link">Faculty Manager</Link>}
-              {/* student */}
-              {isStudent && <Link to="/info-student" className="nav-item nav-link">Info</Link>}
-              {isStudent &&
-                <Link to="/student-contribute" className="nav-item nav-link">Contribute</Link>
-              }
-              {isStudent &&
-                <Link to="/Upload" className="nav-item nav-link">Upload</Link>
-              }
+            <div className="s-layout__sidebar">
+
+              <nav className="s-sidebar__nav">
+                <ul>
+                  {/* manager sidebar */}
+                  {isAdmin &&
+                    <li>
+                      <Link to="/info-manager" className="s-sidebar__nav-link">
+                        <i className="fa fa-user"></i><em>My Profile</em>
+                      </Link>
+                    </li>
+                  }
+                  {isAdmin &&
+                    <li>
+                      <Link to="/contribute" className="s-sidebar__nav-link">
+                        <i className="fas fa-eye"></i><em>View Contribute</em>
+                      </Link>
+                    </li>
+                  }
+                  {isAdmin &&
+                    <li>
+                      <Link to="/statistic" className="s-sidebar__nav-link">
+                        <i className="fas fa-chart-pie"></i><em>Statistic</em>
+                      </Link>
+                    </li>
+                  }
+                  {/* coordinator sidebar */}
+                  {isManager &&
+                    <li>
+                      <Link to="/info-coordinator" className="s-sidebar__nav-link">
+                        <i className="fa fa-user"></i><em>My Profile</em>
+                      </Link>
+                    </li>
+                  }
+                  {isManager &&
+                    <li>
+                      <Link to="/faculty-management" className="s-sidebar__nav-link">
+                        <i className="fas fa-tasks"></i><em>Faculty Manager</em>
+                      </Link>
+                    </li>
+                  }
+                  {/* student */}
+                  {isStudent &&
+                    <li>
+                      <Link to="/info-student" className="s-sidebar__nav-link">
+                        <i className="fa fa-user"></i><em>My Profile</em>
+                      </Link>
+                    </li>
+
+                  }
+                  {isStudent &&
+                    <li>
+                      <Link to="/student-contribute" className="s-sidebar__nav-link">
+                        <i className="fas fa-donate"></i><em>Contribute</em>
+                      </Link>
+                    </li>
+                  }
+                  {isStudent &&
+                    <li>
+                      <Link to="/Upload" className="s-sidebar__nav-link">
+                        <i className="fas fa-upload"></i><em>Upload</em>
+                      </Link>
+                    </li>
+                  }
+                </ul>
+              </nav>
             </div>
+
           }
 
           {!currentUser &&
@@ -138,7 +209,7 @@ class App extends Component {
           <PrivateRoute path="/info-coordinator" roles={[Role.Coordianator]} component={Info_Coordiantor} />
           <PrivateRoute path="/faculty-management" roles={[Role.Coordianator]} component={MainView} />
           {/* student */}
-          <PrivateRoute exact path="/" component={Contribute_View} />
+          <PrivateRoute exact path="/" component={GuessPage} />
           <PrivateRoute exact path="/info-student" roles={[Role.User]} component={Info_Student} />
           <PrivateRoute exact path="/student-contribute" roles={[Role.User]} component={HomePage} />
           <PrivateRoute exact path="/Upload" roles={[Role.User]} component={ImageUpload} />

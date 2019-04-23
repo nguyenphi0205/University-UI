@@ -1,95 +1,75 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
-import Chip from '@material-ui/core/Chip';
-import 'containers/Coordinator/info.css'
-const CustomTableCell = withStyles(theme => ({
-    head: {
-        backgroundColor: theme.palette.common.black,
-        color: theme.palette.common.white,
+import Typography from '@material-ui/core/Typography'
+import Grid from '@material-ui/core/Grid'
+import 'containers/Manager/Manager.css'
+const styles = {
+    card: {
+        minWidth: 275,
     },
-    body: {
-        fontSize: 14,
-    },
-}))(TableCell);
 
-const styles = theme => ({
-    root: {
-        width: '100%',
-        marginTop: theme.spacing.unit * 3,
-        overflowX: 'auto',
+    pos: {
+        marginBottom: 12,
     },
-    table: {
-        minWidth: 1000,
-    },
-    row: {
-        '&:nth-of-type(odd)': {
-            backgroundColor: theme.palette.background.default,
-        },
-    },
-});
+};
+
 
 let id = 0;
-function createData(name, student, date, comment, status, check) {
+function createData(name, calories, fat, status, comment) {
     id += 1;
-    return { id, name, student, date, comment, status, check };
+    return { id, name, calories, fat, status, comment };
 }
 
 const rows = [
-    createData('The Complete Software Developer', 'Phi Nguyen', '13-02-2018', 'good', true, true),
-    createData('The Complete Software Developer', 'Phi Nguyen', '13-03-2019', 'good', false, false),
-    createData('The Complete Software Developer', 'Phi Nguyen', '14-02-2018', 'good', false, false),
-    createData('The Complete Software Developer', 'Phi Nguyen', '15-02-2018', 'good', true, true),
+    createData('The Complete Software Developer’s Career Guide', 'Phi Nguyen', 'physical', 'public', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos accusamus commodi corrupti, optio incidunt provident dolores amet molestiae culpa ullam fugit ipsam sequi! Illo, consectetur ad repellat consequuntur sunt asperiores!'),
+    createData('The Complete Software Developer’s Career Guide', 'Phi Nguyen', 'physical', 'pending', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos accusamus commodi corrupti, optio incidunt provident dolores amet molestiae culpa ullam fugit ipsam sequi! Illo, consectetur ad repellat consequuntur sunt asperiores!'),
+    createData('The Complete Software Developer’s Career Guide', 'Phi Nguyen', 'physical', 'not approve', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos accusamus commodi corrupti, optio incidunt provident dolores amet molestiae culpa ullam fugit ipsam sequi! Illo, consectetur ad repellat consequuntur sunt asperiores!'),
+    createData('The Complete Software Developer’s Career Guide', 'Phi Nguyen', 'physical', 'public', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos accusamus commodi corrupti, optio incidunt provident dolores amet molestiae culpa ullam fugit ipsam sequi! Illo, consectetur ad repellat consequuntur sunt asperiores!'),
+    createData('The Complete Software Developer’s Career Guide', 'Phi Nguyen', 'physical', 'pending', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos accusamus commodi corrupti, optio incidunt provident dolores amet molestiae culpa ullam fugit ipsam sequi! Illo, consectetur ad repellat consequuntur sunt asperiores!'),
+    createData('The Complete Software Developer’s Career Guide', 'Phi Nguyen', 'physical', 'not approve'),
+    createData('The Complete Software Developer’s Career Guide', 'Phi Nguyen', 'physical', 'public'),
+    createData('The Complete Software Developer’s Career Guide', 'Phi Nguyen', 'physical', 'pending'),
+    createData('The Complete Software Developer’s Career Guide', 'Phi Nguyen', 'physical', 'not approve'),
 ];
-
-
 
 function HomePage(props) {
     const { classes } = props;
 
     return (
-        <div className="Faculty-Management-div">
-            <div className="Faculty-Management-View">
-                <Paper className={classes.root}>
-                    <Table className={classes.table}>
-                        <TableHead>
-                            <TableRow>
-                                <CustomTableCell align="right">No</CustomTableCell>
-                                <CustomTableCell align="left">Contribute</CustomTableCell>
-                                <CustomTableCell align="left">Faculty</CustomTableCell>
-                                <CustomTableCell align="left">Comment</CustomTableCell>
-                                <CustomTableCell align="left">Edit</CustomTableCell>
-                                <CustomTableCell align="left">Status</CustomTableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {rows.map(row => (
-                                <TableRow className={classes.row} key={row.id}>
-                                    <CustomTableCell align="right">{row.id}</CustomTableCell>
-                                    <CustomTableCell align="left">{row.name}</CustomTableCell>
-                                    <CustomTableCell align="left">{row.student}</CustomTableCell>
-                                    <CustomTableCell className="Comment" align="left">{row.comment}</CustomTableCell>
-                                    <CustomTableCell align="left">
-                                        <Button variant="contained" color="primary">
-                                            Edit
-                                         </Button>
-                                    </CustomTableCell>
-                                    <CustomTableCell align="left">
-                                        <Chip label={row.status ? 'public' : 'not approve'} className={row.status ? 'aprove' : 'notapprove'} />
-                                    </CustomTableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </Paper>
-            </div>
+        <div className="Manager-View">
+            <Grid container spacing={40}>
+                {
+                    rows.map(row => (
+                        <Grid item xs={12} sm={6} md={6} lg={6} key={row.id}>
+                            <Card className={row.status + 'card'}>
+                                <CardContent>
+                                    <Typography className={row.status} color="yellow" gutterBottom>
+                                        {
+                                            row.status
+                                        }
+                                    </Typography>
+                                    <Typography variant="h5" component="h2">
+                                        {row.name}
+                                    </Typography>
+                                    <Typography className={classes.pos} color="textSecondary">
+                                        {row.fat}
+                                    </Typography>
+                                    <Typography component="p" className="comment-respone">
+                                        {row.comment}
+                                    </Typography>
+                                </CardContent>
+                                <CardActions>
+                                    <Button size="small">Download</Button>
+                                </CardActions>
+                            </Card>
+                        </Grid>
+                    ))}
+            </Grid>
         </div>
     );
 }

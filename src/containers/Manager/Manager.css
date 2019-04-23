@@ -2,21 +2,126 @@
   /* margin-left: 140px; Same width as the sidebar + left position in px */
   font-size: 28px;
   /* Increased text to enable scrolling */
-  margin: auto;
-  margin-left: 10%;
-  width: 90%;
-  /* border: 3px solid green; */
   padding: 0px 10px;
-  padding-top: 10%
+  padding-top: 10%;
+  padding-left: 20% !important;
+}
+.comment-respone{
+  border-radius: 10px;
+  background: #2193b0;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #6dd5ed, #2193b0);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #6dd5ed, #2193b0); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
+
+
+.public {
+  color: #2eb82e !important
+}
+
+.pending {
+  color: #ffcc00 !important
+}
+
+.not {
+  color: #e60000 !important
+}
+
+@media (min-width:320px) {
+  /* smartphones, iPhone, portrait 480x320 phones */
+  .Manager-View {
+    /* margin-left: 140px; Same width as the sidebar + left position in px */
+    font-size: 28px;
+    /* Increased text to enable scrolling */
+    padding-top: 54%;
+    padding-left: 20% !important;
+  }
+  .statistic-div {
+    padding-top: 54% !important;
+    margin: auto;
+    width: 50%;
+    padding: 10px;
+  }
+  .comment{
+    width: 70%
+  }
+}
+
+@media (min-width:481px) {
+  /* portrait e-readers (Nook/Kindle), smaller tablets @ 600 or @ 640 wide. */
+  .Manager-View {
+    /* margin-left: 140px; Same width as the sidebar + left position in px */
+    font-size: 28px;
+    /* Increased text to enable scrolling */
+    padding: 0px 10px;
+    padding-top: 20%;
+    padding-left: 21% !important;
+  }
+  .statistic-div {
+    padding-top: 20% !important;
+    margin: auto;
+    width: 50%;
+    padding: 10px;
+  }
+}
+
+@media (min-width:641px) {
+  /* portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */
+  .Manager-View {
+    /* margin-left: 140px; Same width as the sidebar + left position in px */
+    font-size: 28px;
+    /* Increased text to enable scrolling */
+    padding: 0px 10px;
+    padding-top: 20%;
+    padding-left: 21% !important;
+  }
+  .statistic-div {
+    padding-top: 20% !important;
+    margin: auto;
+    width: 50%;
+    padding: 10px;
+  }
+}
+
+@media (min-width:961px) {
+  /* tablet, landscape iPad, lo-res laptops ands desktops */
+  .Manager-View {
+    /* margin-left: 140px; Same width as the sidebar + left position in px */
+    font-size: 28px;
+    /* Increased text to enable scrolling */
+    padding: 0px 10px;
+    padding-top: 15%;
+    padding-left: 21% !important;
+  }
+  .statistic-div {
+    padding-top: 15% !important;
+    margin: auto;
+    width: 50%;
+    padding: 10px;
+  }
+}
+
+@media (min-width:1025px) {
+  /* big landscape tablets, laptops, and desktops */
+}
+
+@media (min-width:1281px) {
+  .Manager-View {
+    /* margin-left: 140px; Same width as the sidebar + left position in px */
+    font-size: 28px;
+    padding: 0px 10px;
+    padding-top: 10%
+  }
+  .statistic-div {
+    padding-top: 10% !important;
+    margin: auto;
+    width: 50%;
+    padding: 10px;
+  }
 }
 
 .statistic-div {
-  margin-top: 10% !important;
   margin: auto;
-  width: 50%; 
+  width: 50%;
   padding: 10px;
-}
-
-.statistic-barchart {
-  width: 50%
 }

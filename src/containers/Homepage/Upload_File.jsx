@@ -1,12 +1,22 @@
 import React, { Component } from 'react'
 import 'containers/Homepage/Student.css'
 import { Input } from 'reactstrap';
-import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import Checkbox from '@material-ui/core/Checkbox';
+import Button from '@material-ui/core/Button';
 class ImageUpload extends Component {
-    constructor(props) {
-        super(props);
-        this.state = { file: '', imagePreviewUrl: '' };
-    }
+
+    state = {
+        checkedA: true,
+        checkedB: true,
+        checkedF: true,
+    };
+
+    handleChange = name => event => {
+        this.setState({ [name]: event.target.checked });
+    };
 
     _handleSubmit(e) {
         e.preventDefault();
@@ -49,26 +59,35 @@ class ImageUpload extends Component {
 
         return (
             <div className="Upload-div">
-                <Grid container spacing={12}>
-
-                    <Grid item xs={12}>
-                        <Input type="select" name="faculty-select" id="faculty-select">
-                            {rows.map(faculty =>
-                                <option value={faculty.id} key={faculty.id}>{faculty.name}</option>
-                            )}
-                        </Input>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <form onSubmit={(e) => this._handleSubmit(e)}>
-                            <input className="fileInput"
-                                type="file"
-                                onChange={(e) => this._handleImageChange(e)} />
-                        </form>
-                    </Grid>
-                    <button className="submitButton"
-                        type="submit"
-                        onClick={(e) => this._handleSubmit(e)}>Upload </button>
-                </Grid>
+                <Paper className="Info-Paper" elevation={1}>
+                    <Typography className="Info-Title" variant="h4" component="h3">
+                        Upload document
+                     </Typography>
+                    <Input type="select" className="faculty-select" id="faculty-select">
+                        {rows.map(faculty =>
+                            <option value={faculty.id} key={faculty.id}>{faculty.name}</option>
+                        )}
+                    </Input>
+                    <input className="fileInput"
+                        type="file"
+                        onChange={(e) => this._handleImageChange(e)} />
+                    <div>
+                        <Checkbox
+                            checked={this.state.checkedA}
+                            onChange={this.handleChange('checkedA')}
+                            value="checkedA"
+                        />
+                        <em className="term">
+                            Agree terms and conditions
+                        </em>
+                        <div className="Upload-btn">
+                        <Button variant="contained" color="default">
+                            Upload
+                            <CloudUploadIcon />
+                        </Button>
+                        </div>
+                    </div>
+                </Paper>
             </div>
 
         )
