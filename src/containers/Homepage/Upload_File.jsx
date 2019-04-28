@@ -5,57 +5,46 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import Checkbox from '@material-ui/core/Checkbox';
+import axios from 'axios'
 import Button from '@material-ui/core/Button';
-class ImageUpload extends Component {
+import { authenticationService } from "utils/authentication.service";
+import uuid from "uuid";
+import firebase from 'api/firebase';
 
+class ImageUpload extends Component {
+    constructor(props) {
+        super(props);
+    }
     state = {
         checkedA: true,
-        checkedB: true,
-        checkedF: true,
+        faculties: []
     };
 
     handleChange = name => event => {
         this.setState({ [name]: event.target.checked });
+
     };
 
-    _handleSubmit(e) {
-        e.preventDefault();
-        console.log('handle uploading-', this.state.file);
-    }
 
-    _handleImageChange(e) {
-        e.preventDefault();
-
-        let reader = new FileReader();
-        let file = e.target.files[0];
-
-        reader.onloadend = () => {
-            this.setState({
-                file: file,
-                imagePreviewUrl: reader.result
-            });
-        }
-
-        reader.readAsDataURL(file)
-    }
     handleCombobox = event => {
         this.setState({ [event.target.name]: event.target.value });
+
     };
 
+    getData() {
+        const url = 'https://stormy-thicket-83266.herokuapp.com/api/faculty/' + authenticationService.currentUserValue.id;;
+        let test = []
+        axios.get(url).then(res => {
+            test.push(res.data)
+            return test.map(faculties => this.setState({ faculties }))
+        })
+    
+    }
+    componentDidMount() {
+        this.getData();
+    }
+
     render() {
-        //dumb data
-        let id = 0;
-        function createData(name) {
-            id += 1;
-            return { id, name };
-        }
-
-        const rows = [
-            createData('Adam Charlie'),
-            createData('Sui Lily'),
-            createData('Billy J'),
-
-        ];
 
         return (
             <div className="Upload-div">
@@ -64,13 +53,14 @@ class ImageUpload extends Component {
                         Upload document
                      </Typography>
                     <Input type="select" className="faculty-select" id="faculty-select">
-                        {rows.map(faculty =>
-                            <option value={faculty.id} key={faculty.id}>{faculty.name}</option>
-                        )}
+                        {
+                            this.state.faculties.map(faculty =>
+                                <option value={faculty.Faculty_ID} key={faculty.Faculty_ID}>{faculty.Faculty_Name}</option>
+                            )}
                     </Input>
-                    <input className="fileInput"
+                    <input className="fileInput" id="fileInput"
                         type="file"
-                        onChange={(e) => this._handleImageChange(e)} />
+                        accept=".pdf" />
                     <div>
                         <Checkbox
                             checked={this.state.checkedA}
@@ -81,10 +71,55 @@ class ImageUpload extends Component {
                             Agree terms and conditions
                         </em>
                         <div className="Upload-btn">
-                        <Button variant="contained" color="default">
-                            Upload
+                            <Button id="upload-btn" variant="contained" color="default" onClick={
+                                m => {
+                                    let Faculty_ID = document.getElementById('faculty-select').value
+                                    var CreateDate = new Date();
+                                    var dd = String(CreateDate.getDate()).padStart(2, '0');
+                                    var mm = String(CreateDate.getMonth() + 1).padStart(2, '0'); //January is 0!
+                                    var yyyy = CreateDate.getFullYear();
+                                    CreateDate = yyyy + '-' + mm + '-' + dd;
+                                    let get_file_name = document.getElementById('fileInput').value
+                                    let File_name = get_file_name.substring(12, 20000);
+                                    //get name file
+                                    var n = File_name.indexOf('.');
+                                    File_name = File_name.substring(0, n !== -1 ? n : File_name.length);
+                                    //upload firebase
+
+                                    var storage = firebase.storage()
+                                    var file = document.getElementById('fileInput').files[0];
+                                    var fileName = authenticationService.currentUserValue.firstName + '-' + authenticationService.currentUserValue.lastName + '-' + authenticationService.currentUserValue.id + '-' + yyyy + '-' + mm + '-' + dd + '-' + file.name
+                                    var storageRef = storage.ref(Faculty_ID + '/' + fileName)
+                                    var downloadURL = Faculty_ID + '/' + fileName
+                                    storageRef.put(file).then(() => {
+                                        const File_Data = {
+                                            File_ID: uuid.v1(),
+                                            File_Name: File_name,
+                                            DateCreate: CreateDate,
+                                            Faculty_ID: Faculty_ID,
+                                            Customer_ID: authenticationService.currentUserValue.id,
+                                            Status: 'pending',
+                                            LinkDown: downloadURL
+                                        }
+                                    
+                                        axios.post('https://stormy-thicket-83266.herokuapp.com/api/files/', File_Data).then(res => {
+                                            if (res.status === 200) {
+
+                                                alert('Upload success')
+                                                this.props.history.push('/student-contribute');
+                                            }
+                                            else {
+                                                console.log("err")
+                                            }
+                                        }).catch(err => {
+                                            console.err(err)
+                                        })
+                                    })
+                                }
+                            }>
+                                Upload
                             <CloudUploadIcon />
-                        </Button>
+                            </Button>
                         </div>
                     </div>
                 </Paper>

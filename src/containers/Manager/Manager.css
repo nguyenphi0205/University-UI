@@ -13,8 +13,20 @@ background: -webkit-linear-gradient(to right, #6dd5ed, #2193b0);  /* Chrome 10-2
 background: linear-gradient(to right, #6dd5ed, #2193b0); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
 }
+.my_iframe{
+  display: none;
+}
+.comment-respone-coordinator{
+  border-radius: 10px;
+  background: #3D7EAA;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #FFE47A, #3D7EAA);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #FFE47A, #3D7EAA); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  
+}
 
-
+.approve{
+  color:  #9900cc !important
+}
 .public {
   color: #2eb82e !important
 }
@@ -23,7 +35,7 @@ background: linear-gradient(to right, #6dd5ed, #2193b0); /* W3C, IE 10+/ Edge, F
   color: #ffcc00 !important
 }
 
-.not {
+.reject {
   color: #e60000 !important
 }
 

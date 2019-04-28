@@ -4,12 +4,6 @@ import { Navbar } from 'react-bootstrap';
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import Popper from '@material-ui/core/Popper';
-import Grow from '@material-ui/core/Grow';
-import Paper from '@material-ui/core/Paper';
-import Fab from '@material-ui/core/Fab';
-import MenuList from '@material-ui/core/MenuList';
 //test
 import GuessPage from "containers/Guess/GuessPage";
 import Info_Coordiantor from "containers/Coordinator/Info_Coordinator";
@@ -20,8 +14,11 @@ import Contribute_View from "containers/Manager/Contribute_view";
 import MainView from "containers/Coordinator/Faculty_Management";
 import ImageUpload from 'containers/Homepage/Upload_File'
 import Statistic from "containers/Manager/Statistic";
+import MainPage from "containers/Guess/MainPage";
+
 //
 import { Router, Link } from 'react-router-dom';
+import LandingPage from 'components/LandingPage/LandingPage'
 import { PrivateRoute } from "components/PrivateRoute/PrivateRoute";
 import { authenticationService } from "utils/authentication.service";
 import { Role } from 'api/role'
@@ -66,6 +63,7 @@ class App extends Component {
       isAdmin: x && x.role === Role.Admin,
       isManager: x && x.role === Role.Coordianator,
       isStudent: x && x.role === Role.User,
+      isGuess: x && x.role === Role.Guess,
     }));
   }
   logout() {
@@ -73,7 +71,7 @@ class App extends Component {
     history.push('/login');
   }
   render() {
-    const { currentUser, isAdmin, isManager, isStudent, anchorEl, open } = this.state;
+    const { currentUser, isAdmin, isManager, isStudent,isGuess, anchorEl } = this.state;
 
     return (
       <Router history={history}>
@@ -91,15 +89,20 @@ class App extends Component {
                   <Navbar.Collapse className="justify-content-end">
                     {isAdmin &&
                       <Button aria-owns={anchorEl ? 'simple-menu' : undefined} aria-haspopup="true" onClick={this.handleClick} >
-                        MARKETING MANAGER </Button>
+                        {authenticationService.currentUserValue.firstName} {authenticationService.currentUserValue.lastName} </Button>
                     }
                     {isManager &&
                       <Button aria-owns={anchorEl ? 'simple-menu' : undefined} aria-haspopup="true" onClick={this.handleClick} >
-                        MARKETING COORDINATOR </Button>
+                        {authenticationService.currentUserValue.firstName} {authenticationService.currentUserValue.lastName} </Button>
                     }
                     {isStudent &&
                       <Button aria-owns={anchorEl ? 'simple-menu' : undefined} aria-haspopup="true" onClick={this.handleClick} >
-                        STUDENT </Button>
+                        {authenticationService.currentUserValue.firstName} {authenticationService.currentUserValue.lastName} </Button>
+                    }
+                    {
+                      isGuess &&
+                      <Button aria-owns={anchorEl ? 'simple-menu' : undefined} aria-haspopup="true" onClick={this.handleClick} >
+                        {authenticationService.currentUserValue.firstName} {authenticationService.currentUserValue.lastName} </Button>
                     }
                     <Menu
                       id="simple-menu"
@@ -111,6 +114,7 @@ class App extends Component {
                         {isAdmin && <Link to="/info-manager" className="nav-item nav-link">Info</Link>}
                         {isManager && <Link to="/info-coordinator" className="nav-item nav-link">Info</Link>}
                         {isStudent && <Link to="/info-student" className="nav-item nav-link">Info</Link>}
+
                       </MenuItem>
                       <MenuItem onClick={this.logout}>Logout</MenuItem>
                     </Menu>
@@ -187,6 +191,14 @@ class App extends Component {
                       </Link>
                     </li>
                   }
+                  {/* Guess */}
+                  {isGuess &&
+                    <li>
+                      <Link to="/GuessFile" className="s-sidebar__nav-link">
+                        <i className="fas fa-eye"></i><em>View File</em>
+                      </Link>
+                    </li>
+                  }
                 </ul>
               </nav>
             </div>
@@ -197,7 +209,7 @@ class App extends Component {
             <NavBar></NavBar>
           }
           {!currentUser &&
-            <GuessPage></GuessPage>
+            <LandingPage></LandingPage>
           }
 
           {/* define route */}
@@ -209,10 +221,12 @@ class App extends Component {
           <PrivateRoute path="/info-coordinator" roles={[Role.Coordianator]} component={Info_Coordiantor} />
           <PrivateRoute path="/faculty-management" roles={[Role.Coordianator]} component={MainView} />
           {/* student */}
-          <PrivateRoute exact path="/" component={GuessPage} />
+          <PrivateRoute exact path="/" component={MainPage} />
           <PrivateRoute exact path="/info-student" roles={[Role.User]} component={Info_Student} />
           <PrivateRoute exact path="/student-contribute" roles={[Role.User]} component={HomePage} />
           <PrivateRoute exact path="/Upload" roles={[Role.User]} component={ImageUpload} />
+          {/* Guess */}
+          <PrivateRoute exact path="/GuessFile" roles={[Role.Guess]} component={GuessPage} />
         </div>
       </Router>
 

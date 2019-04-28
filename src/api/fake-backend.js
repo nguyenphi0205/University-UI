@@ -1,11 +1,11 @@
 import { Role } from 'api/role'
-
+import axios from 'axios'
 export function configureFakeBackend() {
-    let users = [
-        { id: 1, username: 'admin', password: 'admin', firstName: 'Admin', lastName: 'User', role: Role.Admin },
-        { id: 2, username: 'user', password: 'user', firstName: 'Normal', lastName: 'User', role: Role.User },
-        { id: 3, username: 'manager', password: 'manager', firstName: 'Coordianator', lastName: 'User', role: Role.Coordianator }
-    ];
+    const url_test = 'https://stormy-thicket-83266.herokuapp.com/api/users';
+    let users = []
+    axios.get(url_test).then(res => {
+        return users.push(res.data)
+    })
     let realFetch = window.fetch;
     window.fetch = function (url, opts) {
         const authHeader = opts.headers['Authorization'];
@@ -19,15 +19,21 @@ export function configureFakeBackend() {
                 // authenticate - public
                 if (url.endsWith('/users/authenticate') && opts.method === 'POST') {
                     const params = JSON.parse(opts.body);
-                    const user = users.find(x => x.username === params.username && x.password === params.password);
+                    const userData = users.find(x => x.find(y => y.Email === params.username && y.Password === params.password));
+                    
+                    if (!userData) return error('Username or password is incorrect');
+
+                    const user = userData.find(u => u.Email === params.username && u.Password === params.password)
+
                     if (!user) return error('Username or password is incorrect');
+
                     return ok({
-                        id: user.id,
-                        username: user.username,
-                        firstName: user.firstName,
-                        lastName: user.lastName,
-                        role: user.role,
-                        token: `fake-jwt-token.${user.role}`
+                        id: user.User_ID,
+                        username: user.Email,
+                        firstName: user.First_Name,
+                        lastName: user.Last_Name,
+                        role: user.Role_Name,
+                        token: `fake-jwt-token.${user.Role_Name}`
                     });
                 }
 
@@ -38,18 +44,19 @@ export function configureFakeBackend() {
                     // get id from request url
                     let urlParts = url.split('/');
                     let id = parseInt(urlParts[urlParts.length - 1]);
-
                     // only allow normal users access to their own record
-                    const currentUser = users.find(x => x.role === role);
-                    if (id !== currentUser.id && role !== Role.Admin && role !== Role.Coordianator && role !== Role.User) return unauthorised();
-
-                    const user = users.find(x => x.id === id);
+                    const currentUserData = users.find(x => x.find(y => y.Role_Name === role));
+                    const currentUser = currentUserData.find(x => x.Role_Name === role);
+                    if (id !== currentUser.User_ID && role !== Role.Admin && role !== Role.Coordianator && role !== Role.User && role !== Role.Guess) return unauthorised();
+                    let userData;
+                    users.find(u => userData = u);
+                    const user= userData.find(z => parseInt(z.User_ID)===id)
                     return ok(user);
                 }
 
                 // get all users - admin only
                 if (url.endsWith('/users') && opts.method === 'GET') {
-                    if (role !== Role.Admin && role !== Role.Coordianator && role !== Role.User) return unauthorised();
+                    if (role !== Role.Admin && role !== Role.Coordianator && role !== Role.User && role !== Role.Guess) return unauthorised();
                     return ok(users);
                 }
 
